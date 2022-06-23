@@ -5,11 +5,11 @@
 It's simple! Just use:
 
 ```
-node index.js {your cep}
+node index.js {your_cep}
 ```
 
 Example:
 
 ```
-node index.js {01445000}
+node index.js 01445000
 ```
