@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://gitlab.com/kumanaya/api-cep/issues"
   },
-  "homepage": "https://gitlab.com/kumanaya/api-cep#readme"
+  "homepage": "https://gitlab.com/kumanaya/api-cep#readme",
+  "dependencies": {
+    "axios": "^0.27.2"
+  }
 }
