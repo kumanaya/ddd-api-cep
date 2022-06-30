@@ -1,35 +1,73 @@
-var http = require("http");
+const axios = require("axios").default;
 
-try {
-	const args = process.argv;
-	const cep = args.slice(2);
-	const regex = /^[0-9]*$/g;
+if (require.main === module) {
+  main();
+}
 
-	if (!cep.length) {
-		console.log("[ALERT] insert a CEP valid");
-		process.exit();
-	}
+function main() {
+  const cep = getArgs();
+  const isValidCep = validateCep(cep);
 
-	if (regex.test(cep)) {
-		const options = {
-			host: "viacep.com.br",
-			path: `/ws/${cep}/json/`,
-		};
+  if (!isValidCep) {
+    process.exit();
+  }
 
-		callback = function (response) {
-			if (response.statusCode == 200) {
-				response.on("data", function (chunk) {
-					console.log(chunk.toString());
-				});
-			} else if (response.statusCode == 400) {
-				console.log("[ALERT] CEP not found");
-			}
-		};
+  getAddress(cep);
+}
 
-		http.request(options, callback).end();
-	} else {
-		console.error("[ALERT] character is not allow");
-	}
-} catch (error) {
-	console.error("[ERROR] " + error);
+function getArgs() {
+  const args = process.argv;
+  const cep = args.slice(2);
+  return cep[0];
+}
+
+function validateCep(cep) {
+  const regex = /^[0-9]*$/g;
+  let isValidCep = true;
+
+  if (!regex.test(cep)) {
+    console.log("[ALERT] character is not allow");
+    isValidCep = false;
+  }
+
+  if (cep.length < 8) {
+    console.log("[ALERT] insert a CEP valid");
+    isValidCep = false;
+  }
+
+  return isValidCep;
+}
+
+function getAddress(cep) {
+  const host = "https://viacep.com.br";
+  const path = `/ws/${cep}/json/`;
+  const url = host + path;
+  axios
+    .get(url)
+    .then(function (response) {
+      serverStatus(response);
+    })
+    .catch(function (error) {
+      console.log("[ERROR] problem in requisition");
+    })
+    .then(function () {
+      process.exit();
+    });
+}
+
+function serverStatus(response) {
+  const statusCode = response.status;
+
+  switch (statusCode) {
+    case 200:
+      console.log(JSON.stringify(response.data, null, 2));
+      break;
+    case 400:
+      console.log("[ALERT] CEP not found");
+      break;
+
+    default:
+      console.log("[ALERT] Internal Server Error");
+      break;
+  }
 }
