@@ -1,0 +1,23 @@
+{
+  "name": "api-cep",
+  "version": "1.0.0",
+  "description": "get your address by your cep",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/kumanaya/api-cep.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/kumanaya/api-cep/issues"
+  },
+  "homepage": "https://gitlab.com/kumanaya/api-cep#readme",
+  "dependencies": {
+    "axios": "^0.27.2"
+  }
+}
